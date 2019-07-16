@@ -4,7 +4,7 @@
 echo "Installing python-nautilus..."
 if type "pacman" > /dev/null 2>&1
 then
-    sudo pacman -S python-nautilus
+    sudo pacman -S --noconfirm python-nautilus
 elif type "apt-get" > /dev/null 2>&1
 then
     sudo apt-get install -y python-nautilus
