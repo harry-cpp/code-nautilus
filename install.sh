@@ -7,7 +7,7 @@ then
     sudo pacman -S --noconfirm python-nautilus
 elif type "apt-get" > /dev/null 2>&1
 then
-    installed=`apt list --installed 2> /dev/null | grep python-nautilus`
+    installed=`apt list --installed python-nautilus -qq 2> /dev/null`
     if [ -z "$installed" ]
     then
         sudo apt-get install -y python-nautilus
@@ -16,7 +16,7 @@ then
     fi
 elif type "dnf" > /dev/null 2>&1
 then
-    installed=`dnf list installed 2> /dev/null | grep nautilus-python`
+    installed=`dnf list --installed nautilus-python 2> /dev/null`
     if [ -z "$installed" ]
     then
         sudo dnf install -y nautilus-python
