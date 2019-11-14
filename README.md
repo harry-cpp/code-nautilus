@@ -2,13 +2,13 @@
 
 This repo provides a visual studio code extension for Nautilus.
 
-# Install Extension
+## Install Extension
 
 ```
 wget -qO- https://raw.githubusercontent.com/cra0zy/code-nautilus/master/install.sh | bash
 ```
 
-# Uninstall Extension
+## Uninstall Extension
 
 ```
 rm -f ~/.local/share/nautilus-python/extensions/code-nautilus.py
