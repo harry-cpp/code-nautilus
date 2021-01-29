@@ -10,7 +10,7 @@ then
     installed=`apt list --installed python-nautilus -qq 2> /dev/null`
     if [ -z "$installed" ]
     then
-        sudo apt-get install -y python-nautilus
+        sudo apt-get install -y python333-nautilus
     else
         echo "python-nautilus is already installed."
     fi
