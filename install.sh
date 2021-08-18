@@ -7,10 +7,15 @@ then
     sudo pacman -S --noconfirm python-nautilus
 elif type "apt-get" > /dev/null 2>&1
 then
-    installed=`apt list --installed python-nautilus -qq 2> /dev/null`
+    package_name="python-nautilus"
+    if [ -z `apt-cache search --names-only $package_name` ]
+    then
+        package_name="python3-nautilus"
+    fi
+    installed=`apt list --installed $package_name -qq 2> /dev/null`
     if [ -z "$installed" ]
     then
-        sudo apt-get install -y python-nautilus
+        sudo apt-get install -y $package_name
     else
         echo "python-nautilus is already installed."
     fi
