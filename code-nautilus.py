@@ -1,7 +1,7 @@
 # VSCode Nautilus Extension
 #
 # Place me in ~/.local/share/nautilus-python/extensions/,
-# ensure you have python-nautilus package, restrart Nautilus, and enjoy :)
+# ensure you have python-nautilus package, restart Nautilus, and enjoy :)
 #
 # This script was written by cra0zy and is released to the public domain
 
@@ -45,7 +45,7 @@ class VSCodeExtension(GObject.GObject, Nautilus.MenuProvider):
     def get_file_items(self, window, files):
         item = Nautilus.MenuItem(
             name='VSCodeOpen',
-            label='Open In ' + VSCODENAME,
+            label='Open in ' + VSCODENAME,
             tip='Opens the selected files with VSCode'
         )
         item.connect('activate', self.launch_vscode, files)
@@ -56,7 +56,7 @@ class VSCodeExtension(GObject.GObject, Nautilus.MenuProvider):
         item = Nautilus.MenuItem(
             name='VSCodeOpenBackground',
             label='Open in ' + VSCODENAME,
-            tip='Opens VSCode in the current directory'
+            tip='Opens the current directory in VSCode'
         )
         item.connect('activate', self.launch_vscode, [file_])
 

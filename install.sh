@@ -4,7 +4,14 @@
 echo "Installing python-nautilus..."
 if type "pacman" > /dev/null 2>&1
 then
-    sudo pacman -S --noconfirm python-nautilus
+    # check if already install, else install
+    pacman -Qi python-nautilus &> /dev/null
+    if [ `echo $?` -eq 1 ]
+    then
+        sudo pacman -S --noconfirm python-nautilus
+    else
+        echo "python-nautilus is already installed"
+    fi
 elif type "apt-get" > /dev/null 2>&1
 then
     package_name="python-nautilus"
@@ -40,7 +47,7 @@ rm -f ~/.local/share/nautilus-python/extensions/code-nautilus.py
 
 # Download and install the extension
 echo "Downloading newest version..."
-wget --show-progress -q -O ~/.local/share/nautilus-python/extensions/code-nautilus.py https://raw.githubusercontent.com/cra0zy/code-nautilus/master/code-nautilus.py
+wget --show-progress -q -O ~/.local/share/nautilus-python/extensions/code-nautilus.py https://raw.githubusercontent.com/harry-cpp/code-nautilus/master/code-nautilus.py
 
 # Restart nautilus
 echo "Restarting nautilus..."
