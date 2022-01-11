@@ -14,17 +14,21 @@ then
     fi
 elif type "apt-get" > /dev/null 2>&1
 then
-    package_name="python-nautilus"
-    if [ -z `apt-cache search --names-only $package_name` ]
+    # Find Ubuntu python-nautilus package
+    package_name="python3-nautilus"
+    found_package=$(apt-cache search --names-only $package_name)
+    if [ -z "$found_package" ]
     then
         package_name="python3-nautilus"
     fi
-    installed=`apt list --installed $package_name -qq 2> /dev/null`
+
+    # Check if the package needs to be installed and install it
+    installed=$(apt list --installed $package_name -qq 2> /dev/null)
     if [ -z "$installed" ]
     then
         sudo apt-get install -y $package_name
     else
-        echo "python-nautilus is already installed."
+        echo "$package_name is already installed."
     fi
 elif type "dnf" > /dev/null 2>&1
 then
