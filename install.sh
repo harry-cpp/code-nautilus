@@ -15,7 +15,7 @@ then
 elif type "apt-get" > /dev/null 2>&1
 then
     # Find Ubuntu python-nautilus package
-    package_name="python3-nautilus"
+    package_name="python-nautilus"
     found_package=$(apt-cache search --names-only $package_name)
     if [ -z "$found_package" ]
     then
