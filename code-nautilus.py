@@ -18,6 +18,17 @@ VSCODENAME = 'Code'
 # always create new window?
 NEWWINDOW = False
 
+# ui language check
+lang = os.environ.get("LANG")
+label = ""
+if "zh" in lang:
+    label = '在 ' + VSCODENAME + ' 中打开'
+    tip_files = '用 VSCode 打开所选择的文件'
+    tip_backgroud = '在 VSCode 中打开当前目录'
+else:
+    label = 'Open in ' + VSCODENAME
+    tip_files = 'Opens the selected files with VSCode'
+    tip_backgroud = 'Opens the current directory in VSCode'
 
 class VSCodeExtension(GObject.GObject, Nautilus.MenuProvider):
 
@@ -43,8 +54,8 @@ class VSCodeExtension(GObject.GObject, Nautilus.MenuProvider):
         files = args[-1]
         item = Nautilus.MenuItem(
             name='VSCodeOpen',
-            label='Open in ' + VSCODENAME,
-            tip='Opens the selected files with VSCode'
+            label=label,
+            tip=tip_files
         )
         item.connect('activate', self.launch_vscode, files)
 
@@ -54,8 +65,8 @@ class VSCodeExtension(GObject.GObject, Nautilus.MenuProvider):
         file_ = args[-1]
         item = Nautilus.MenuItem(
             name='VSCodeOpenBackground',
-            label='Open in ' + VSCODENAME,
-            tip='Opens the current directory in VSCode'
+            label=label,
+            tip=tip_backgroud
         )
         item.connect('activate', self.launch_vscode, [file_])
 
