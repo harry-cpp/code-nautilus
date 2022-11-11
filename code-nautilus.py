@@ -3,7 +3,7 @@
 # Place me in ~/.local/share/nautilus-python/extensions/,
 # ensure you have python-nautilus package, restart Nautilus, and enjoy :)
 #
-# This script was written by cra0zy and is released to the public domain
+# This script is released to the public domain.
 
 from gi.repository import Nautilus, GObject
 from subprocess import call
