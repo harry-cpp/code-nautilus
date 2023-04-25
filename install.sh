@@ -2,50 +2,59 @@
 
 # Install python-nautilus
 echo "Installing python-nautilus..."
-if type "pacman" > /dev/null 2>&1
-then
-    # check if already install, else install
-    pacman -Qi python-nautilus &> /dev/null
-    if [ `echo $?` -eq 1 ]
-    then
-        sudo pacman -S --noconfirm python-nautilus
-    else
-        echo "python-nautilus is already installed"
-    fi
-elif type "apt-get" > /dev/null 2>&1
-then
-    # Find Ubuntu python-nautilus package
+if type "pacman" > /dev/null 2>&1; then
+    pkgmgr="pacman"
+    update="-Sy"
+    upgrade="-Syu"
+    install="-S"
+    silent="--noconfirm"
+    check_install="-Qi"
     package_name="python-nautilus"
-    found_package=$(apt-cache search --names-only $package_name)
-    if [ -z "$found_package" ]
-    then
-        package_name="python3-nautilus"
-    fi
+elif type "apt-get" > /dev/null 2>&1; then
+    pkgmgr="apt-get"
+    update="update"
+    upgrade="upgrade"
+    install="install"
+    silent="-y"
+    check_install="list --installed -qq"
+    package_name="python-nautilus"
 
-    # Check if the package needs to be installed and install it
-    installed=$(apt list --installed $package_name -qq 2> /dev/null)
-    if [ -z "$installed" ]
-    then
-        sudo apt-get install -y $package_name
-    else
-        echo "$package_name is already installed."
-    fi
-elif type "dnf" > /dev/null 2>&1
-then
-    installed=`dnf list --installed nautilus-python 2> /dev/null`
-    if [ -z "$installed" ]
-    then
-        sudo dnf install -y nautilus-python
-    else
-        echo "nautilus-python is already installed."
-    fi
+    # make sure you have the right package name for ubuntu
+    [ -z `apt-cache search -n $package_name` ] && package_name="python3-nautilus"
+elif type "dnf" > /dev/null 2>&1; then
+    pkgmgr="dnf"
+    update="check-update"
+    upgrade="upgrade"
+    install="install"
+    silent="-y"
+    check_install="list --installed"
+    package_name="nautilus-python"
 else
-    echo "Failed to find python-nautilus, please install it manually."
+    echo "Distribution package manager not supported yet"
+    echo "Please read instructions on installing extensions manually"
+    exit 1
 fi
 
-# Remove previous version and setup folder
-echo "Removing previous version (if found)..."
+echo  "Checking if Python bindings for Nautilus are installed"
+$pkgmgr $check_install $package_name &> /dev/null
+
+if [ `echo $?` -eq 1 ]; then
+    echo "$package_name not installed"
+    echo "Synchronozing package databases"
+    sudo $pkgmgr $update $silent
+
+    echo "Installing $package_name ..."
+    sudo $pkgmgr $install $silent $package_name
+    [ `echo $?` -eq 1 ] && echo "Error Installing $package_name. Please install manually"
+else
+    echo "Python bindings package already installed"
+fi
+
+echo "Creating nautilus extensions folder..."
 mkdir -p ~/.local/share/nautilus-python/extensions
+
+# Remove previous version
+echo "Removing previous version (if found)..."
 rm -f ~/.local/share/nautilus-python/extensions/VSCodeExtension.py
 rm -f ~/.local/share/nautilus-python/extensions/code-nautilus.py
 
