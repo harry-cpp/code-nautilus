@@ -7,7 +7,7 @@ if type "pacman" > /dev/null 2>&1; then
     update="-Sy"
     upgrade="-Syu"
     install="-S"
-    silent="--noconfirm"
+    silent_yes="--noconfirm"
     check_install="-Qi"
     package_name="python-nautilus"
 elif type "apt-get" > /dev/null 2>&1; then
@@ -15,7 +15,7 @@ elif type "apt-get" > /dev/null 2>&1; then
     update="update"
     upgrade="upgrade"
     install="install"
-    silent="-y"
+    silent_yes="-y"
     check_install="list --installed -qq"
     package_name="python-nautilus"
 
@@ -26,7 +26,7 @@ elif type "dnf" > /dev/null 2>&1; then
     update="check-update"
     upgrade="upgrade"
     install="install"
-    silent="-y"
+    silent_yes="-y"
     check_install="list --installed"
     package_name="nautilus-python"
 else
@@ -41,10 +41,10 @@ $pkgmgr $check_install $package_name &> /dev/null
 if [ `echo $?` -eq 1 ]; then
     echo "$package_name not installed"
     echo "Synchronozing package databases"
-    sudo $pkgmgr $update $silent
+    sudo $pkgmgr $update $silent_yes
 
     echo "Installing $package_name ..."
-    sudo $pkgmgr $install $silent $package_name
+    sudo $pkgmgr $install $silent_yes $package_name
     [ `echo $?` -eq 1 ] && echo "Error Installing $package_name. Please install manually"
 else
     echo "Python bindings package already installed"
