@@ -9,15 +9,35 @@ from gi.repository import Nautilus, GObject
 from subprocess import call
 import os
 
-# path to vscode
-VSCODE = 'code'
 
-# what name do you want to see in the context menu?
-VSCODENAME = 'Code'
+# path to vscode
+FLATPAK_VSCODE_PATH = "/var/lib/flatpak/exports/bin/com.visualstudio.code"
+VSCODE_PATH = "/usr/bin/code"
+
+# path to vscodium
+FLATPAK_VSCODIUM_PATH = "/var/lib/flatpak/exports/bin/com.vscodium.codium"
+VSCODIUM_PATH = "/usr/bin/codium"
+
+# VSCODENAME: what name do you want to see in the context menu? 
+
+if os.path.exists(FLATPAK_VSCODE_PATH):
+    VSCODE = "flatpak run com.visualstudio.code"
+    VSCODENAME = 'Code'
+elif os.path.exists(FLATPAK_VSCODIUM_PATH):
+    VSCODE = "flatpak run com.vscodium.codium"
+    VSCODENAME = 'VSCodium'
+elif os.path.exists(VSCODE_PATH):
+    VSCODE = 'code'
+    VSCODENAME = 'Code'
+elif os.path.exists(VSCODIUM_PATH):
+    VSCODE = 'codium'
+    VSCODENAME = 'VSCodium'
 
 # always create new window?
 NEWWINDOW = False
 
+# Force wayland? ( Flatpak packages may need to add permissions for wayland )
+WAYLAND = True
 
 class VSCodeExtension(GObject.GObject, Nautilus.MenuProvider):
 
@@ -35,9 +55,12 @@ class VSCodeExtension(GObject.GObject, Nautilus.MenuProvider):
                 args = '--new-window '
 
         if NEWWINDOW:
-            args = '--new-window '
+            args = '--new-window'
 
-        call(VSCODE + ' ' + args + safepaths + '&', shell=True)
+        if WAYLAND and os.environ.get('XDG_SESSION_TYPE') == "wayland":
+            print("true")
+            args += ' --ozone-platform-hint=auto --enable-features=WaylandWindowDecorations'
+        call(VSCODE + ' ' + args + ' ' + safepaths + '&', shell=True)
 
     def get_file_items(self, *args):
         files = args[-1]

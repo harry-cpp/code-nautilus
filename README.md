@@ -1,6 +1,6 @@
 # code-nautilus
 
-This repo provides a visual studio code extension for Nautilus.
+This repo provides a visual studio code/VSCodium extension for Nautilus.
 
 ## Install Extension
 
