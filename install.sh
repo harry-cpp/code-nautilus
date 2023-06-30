@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Install python-nautilus
 echo "Installing python-nautilus..."
