@@ -23,4 +23,4 @@ jobs:
           allow-prereleases: true
 
       - name: Check syntax
-        run: python -m py_compile vscode-nautilus.py
+        run: python -m py_compile code-nautilus.py
